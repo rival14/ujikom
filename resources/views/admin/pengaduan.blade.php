@@ -140,8 +140,15 @@
 	    Data Pengaduan
 	  </div>
 	  <div class="card-body">
-	  	<form class="form-inline float-right mb-2" action="{{ route('pengaduan.cari') }}" method="GET">
-	      <input class="form-control mr-sm-2" type="search" placeholder="Cari Data Pengaduan" name="cari">
+	  	<form class="form-inline float-right mb-2" action="{{ route('pengaduan.filter') }}" method="GET">
+	  	  <label>Filter :</label>
+		  <select name="status" id="status" class="form-control mx-2">
+		  		<option value="">Tidak Ada</option>
+	            <option value="0">Belum Dikonfirmasi</option>
+	            <option value="proses">Sedang Dalam Proses</option>
+	            <option value="selesai">Telah Selesai</option>
+	      </select>
+	      <input class="form-control mr-sm-2" type="search" placeholder="Kata Kunci" name="cari">
 	      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cari <i class="fa fa-search"></i></button>
 	    </form>
 	    <table class="table mt-2 table-responsive">

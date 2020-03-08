@@ -9,6 +9,7 @@ use Validator;
 use Carbon\Carbon;
 use File;
 use Storage;
+use Illuminate\Validation\Rule;
 
 class adminController extends Controller
 {
@@ -44,26 +45,60 @@ class adminController extends Controller
                         ->withErrors($validasi)
                         ->withInput();
         }else{
-            $foto = $Request->file('foto');
-            $saveto = storage_path('app/public/petugas/profile');
-            $nama = Carbon::now()->timestamp . '_' . uniqid() . '.' . $foto->getClientOriginalExtension();
+            if (!$Request->file('foto')) {
+                DB::table('petugas')->where('id_petugas', Request('id_petugas'))->update([
+                    'nama_petugas' => Request('nama'),
+                    'username' => Request('username'),
+                    'telp' => Request('telp'),
+                ]);
 
-            $foto->move($saveto, $nama);
+                return redirect('admin/profile')->with('sukses', 'Sukses Mengupdate Data!');
+            }else{
+                $foto = $Request->file('foto');
+                $saveto = storage_path('app/public/petugas/profile');
+                $nama = Carbon::now()->timestamp . '_' . uniqid() . '.' . $foto->getClientOriginalExtension();
 
-            DB::table('petugas')->where('id_petugas', Request('id_petugas'))->update([
-                'nama_petugas' => Request('nama'),
-                'username' => Request('username'),
-                'telp' => Request('telp'),
-                'foto_petugas' => $nama,
-            ]);
+                $foto->move($saveto, $nama);
 
-            return redirect('admin/profile')->with('sukses', 'Sukses Mengupdate Data!');
+                DB::table('petugas')->where('id_petugas', Request('id_petugas'))->update([
+                    'nama_petugas' => Request('nama'),
+                    'username' => Request('username'),
+                    'telp' => Request('telp'),
+                    'foto_petugas' => $nama,
+                ]);
+                Session::put('foto',$nama);
+
+                return redirect('admin/profile')->with('sukses', 'Sukses Mengupdate Data!');
+            }
         }
     }
 
     public function adminPassword()
     {
-
         return view('admin.gantipassword');
+    }
+
+    public function adminGantiPassword(Request $Request)
+    {
+        $validasi = Validator::make($Request->all(), [
+            'password' => [
+                'required',
+                Rule::exists('petugas')->where('id_petugas', Session::get('id_petugas')),
+            ],
+            'pwdbaru' => 'required',
+            'pwdkonfirmasi' => 'required|same:pwdbaru',
+        ]);
+
+        if ($validasi->fails()) {
+            return redirect('admin/password')
+                        ->withErrors($validasi)
+                        ->withInput();
+        }else{
+            DB::table('petugas')->where('id_petugas', Session::get('id_petugas'))->update([
+                'password' => Request('pwdbaru')
+            ]);
+
+            return redirect('admin/password')->with('sukses', 'Sukses Mengubah Password!');
+        }
     }
 }

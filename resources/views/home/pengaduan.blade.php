@@ -3,12 +3,13 @@
 @section('content')
 
 <div class="container my-4 text-center">
+	@if (!Session::has('nik'))
 	<div class="alert alert-info">
 		<p>SILAHKAN LOGIN/DAFTAR TERLEBIH DAHULU UNTUK MELAKUKAN PENGADUAN</p>
 		<a href="{{ url('/login') }}" class="btn btn-primary mx-auto col-sm-1 my-1">MASUK</a>
 		<a href="{{ url('/daftar') }}" class="btn btn-success mx-auto col-sm-1 my-1">DAFTAR</a>
 	</div>
-
+	@endif
 	<div class="card mb-5">
 	  <div class="card-header text-light bg-dark">
 	  	Pengaduan

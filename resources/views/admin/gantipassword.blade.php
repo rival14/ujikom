@@ -38,12 +38,11 @@
 	  </div>
 	  <div class="card-body">
 	  	<h3 class="text-center">Ubah Password<br><i class="fa fa-lock fa-3x"></i></h3>
-	  	<form action="{{ route('admin.profile') }}" method="POST" class="col-md-10 mx-auto" enctype="multipart/form-data">
+	  	<form action="{{ route('admin.pwd') }}" method="POST" class="col-md-10 mx-auto">
 	  		@csrf
-	  		<input type="hidden" class="form-control" name="id_petugas">
 		  <div class="form-group">
 		    <label>Password Lama</label>
-		    <input type="password" class="form-control" name="pwdlama">
+		    <input type="password" class="form-control" name="password">
 		  </div>
 		  <div class="form-group">
 		    <label>Password Baru</label>

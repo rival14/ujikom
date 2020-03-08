@@ -44,20 +44,60 @@ class dashboardController extends Controller
                         ->withErrors($validasi)
                         ->withInput();
         }else{
-            $foto = $Request->file('foto');
-            $saveto = storage_path('app/public/masyarakat/profile');
-            $nama = Carbon::now()->timestamp . '_' . uniqid() . '.' . $foto->getClientOriginalExtension();
+            if (!$Request->file('foto')) {
+                DB::table('masyarakat')->where('nik', Request('nik'))->update([
+                    'nama' => Request('nama'),
+                    'username' => Request('username'),
+                    'telp' => Request('telp'),
+                ]);
 
-            $foto->move($saveto, $nama);
+                return redirect('dashboard/profile')->with('sukses', 'Sukses Mengupdate Data!');
+            }else{
+                $foto = $Request->file('foto');
+                $saveto = storage_path('app/public/masyarakat/profile');
+                $nama = Carbon::now()->timestamp . '_' . uniqid() . '.' . $foto->getClientOriginalExtension();
 
-            DB::table('masyarakat')->where('nik', Request('nik'))->update([
-                'nama' => Request('nama'),
-                'username' => Request('username'),
-                'telp' => Request('telp'),
-                'foto_user' => $nama,
+                $foto->move($saveto, $nama);
+
+                DB::table('masyarakat')->where('nik', Request('nik'))->update([
+                    'nama' => Request('nama'),
+                    'username' => Request('username'),
+                    'telp' => Request('telp'),
+                    'foto_user' => $nama,
+                ]);
+                Session::put('foto',$nama);
+
+                return redirect('dashboard/profile')->with('sukses', 'Sukses Mengupdate Data!');
+            }
+        }
+    }
+
+    public function dashboardPassword()
+    {
+        return view('admin.gantipassword');
+    }
+
+    public function dashboardGantiPassword(Request $Request)
+    {
+        $validasi = Validator::make($Request->all(), [
+            'password' => [
+                'required',
+                Rule::exists('masyarakat')->where('nik', Session::get('nik')),
+            ],
+            'pwdbaru' => 'required',
+            'pwdkonfirmasi' => 'required|same:pwdbaru',
+        ]);
+
+        if ($validasi->fails()) {
+            return redirect('dashboard/password')
+                        ->withErrors($validasi)
+                        ->withInput();
+        }else{
+            DB::table('masyarakat')->where('nik', Session::get('nik'))->update([
+                'password' => Request('pwdbaru')
             ]);
 
-            return redirect('dashboard/profile')->with('sukses', 'Sukses Mengupdate Data!');
+            return redirect('dashboard/password')->with('sukses', 'Sukses Mengubah Password!');
         }
     }
 }

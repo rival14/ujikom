@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Session;
 
-class adminLogin
+class login
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,10 @@ class adminLogin
      */
     public function handle($request, Closure $next)
     {
-        if (Session::get('status') == 'admin' OR Session::get('status') == 'petugas') {
+        if (!Session::has('nik')) {
             return $next($request);
         }else{
-            return redirect('/')->withErrors('Anda harus login terlebih dahulu');
+            return redirect('/dashboard')->withErrors('Anda Telah Login!');
         }
     }
 }

@@ -12,7 +12,7 @@ class pengaduanAdminController extends Controller
 {
     public function pengaduanIndex()
     {
-        $data = DB::table('pengaduan')->paginate(10);
+        $data = DB::table('pengaduan')->orderBy('status', 'asc')->paginate(10);
         $petugas = DB::table('pengaduan')->whereIn('status', ['0','proses'])->paginate(10);
 
         return view('admin.pengaduan', ['data' => $data, 'petugas' => $petugas]);
@@ -43,6 +43,34 @@ class pengaduanAdminController extends Controller
                 return view('admin.pengaduan', compact('petugas'), compact('data'));
             }
         }
+    }
+
+    public function pengaduanFilterIndex(Request $Request)
+    {
+        if (Request('cari') == '' && Request('status') == '') {
+            return redirect('admin/pengaduan');
+        }elseif (Request('cari') == '') {
+            $data = DB::table('pengaduan')
+                ->where('status', 'like', '%'.Request('status').'%')
+                ->paginate(10);        
+
+            return view('admin.pengaduan', compact('data'));
+        }elseif (Request('status') == '') {
+            $data = DB::table('pengaduan')
+                ->where('judul', 'like', '%'.Request('judul').'%')
+                ->orderBy('status', 'asc')
+                ->paginate(10);        
+
+            return view('admin.pengaduan', compact('data'));
+        }else{
+            $data = DB::table('pengaduan')
+                ->where('status', 'like', '%'.Request('status').'%')
+                ->where('judul', 'like', '%'.Request('cari').'%')
+                ->paginate(10);        
+
+            return view('admin.pengaduan', compact('data'));
+        }
+        $data = DB::table('pengaduan')->where()->paginate(10);
     }
 
     public function pengaduanAjax($id)

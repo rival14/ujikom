@@ -51,7 +51,7 @@
 						<a href="{{ url('admin/pengaduan') }}" class="nav-link">Pengaduan</a>
 					</li>
 					<li class="navbar-item">
-						<a href="" class="nav-link">Laporan</a>
+						<a href="{{ url('admin/laporan') }}" class="nav-link">Laporan</a>
 					</li>
 					<li class="nav-item dropdown">
 				      	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -60,7 +60,7 @@
 				      	</a>
 				      	<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				        	<a class="dropdown-item" href="{{ url('/admin/profile') }}">Profile</a>
-				        	<a class="dropdown-item" href="#">Ganti Password</a>
+				        	<a class="dropdown-item" href="{{ url('/admin/password') }}">Ganti Password</a>
 				        	<div class="dropdown-divider"></div>
 				        	<a class="dropdown-item" href="{{ url('logout') }}">Keluar</a>
 				      	</div>
@@ -84,7 +84,7 @@
 				      	</a>
 				      	<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				        	<a class="dropdown-item" href="{{ url('/admin/profile') }}">Profile</a>
-				        	<a class="dropdown-item" href="#">Ganti Password</a>
+				        	<a class="dropdown-item" href="{{ url('/admin/password') }}">Ganti Password</a>
 				        	<div class="dropdown-divider"></div>
 				        	<a class="dropdown-item" href="{{ url('logout') }}">Keluar</a>
 				      	</div>
@@ -105,7 +105,7 @@
 				      	</a>
 				      	<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				        	<a class="dropdown-item" href="{{ url('/dashboard/profile') }}">Profile</a>
-				        	<a class="dropdown-item" href="#">Ganti Password</a>
+				        	<a class="dropdown-item" href="{{ url('/dashboard/password') }}">Ganti Password</a>
 				        	<div class="dropdown-divider"></div>
 				        	<a class="dropdown-item" href="{{ url('logout') }}">Keluar</a>
 				      	</div>

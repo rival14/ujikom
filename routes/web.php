@@ -15,11 +15,13 @@ Route::get('/', 'indexController@index');
 Route::get('/pengaduan', 'indexController@pengaduan');
 Route::get('/caripengaduan', 'indexController@caripengaduan')->name('pengaduanindex.cari');
 
+Route::middleware(['login'])->group(function () {
 	Route::get('/daftar', 'loginController@daftar');
 	Route::post('/daftar', 'loginController@daftarMember')->name('daftar');
+	Route::get('/login', 'loginController@login');
+	Route::post('/login', 'loginController@loginMember')->name('login');
+});
 
-Route::get('/login', 'loginController@login');
-Route::post('/login', 'loginController@loginMember')->name('login');
 Route::get('/logout', 'loginController@logout');
 
 Route::get('/loginadmin', 'loginadminController@login');
@@ -29,6 +31,8 @@ Route::middleware(['Masyarakat', 'XSS'])->group(function () {
 	Route::get('/dashboard', 'dashboardController@dashboardIndex');
 	Route::get('/dashboard/profile', 'dashboardController@dashboardProfile');
 	Route::post('/dashboard/profile/update', 'dashboardController@dashboardProfileUpdate')->name('dashboard.profile');
+	Route::get('/dashboard/password', 'dashboardController@dashboardPassword');
+	Route::post('/dashboard/password', 'dashboardController@dashboardGantiPassword')->name('dashboard.pwd');
 
 	Route::get('/dashboard/pengaduan', 'pengaduanPenggunaController@pengaduanIndex');
 	Route::get('/dashboard/pengaduan/cari/', 'pengaduanPenggunaController@pengaduanCari')->name('pengaduanPengguna.cari');
@@ -44,6 +48,7 @@ Route::middleware(['adminLogin', 'XSS'])->group(function () {
 	Route::get('/admin/profile', 'adminController@adminProfile');
 	Route::post('/admin/profile/update', 'adminController@adminProfileUpdate')->name('admin.profile');
 	Route::get('/admin/password', 'adminController@adminPassword');
+	Route::post('/admin/password', 'adminController@adminGantiPassword')->name('admin.pwd');
 
 	Route::get('/admin/petugas', 'petugasController@petugasIndex');
 	Route::get('/admin/petugas/cari/', 'petugasController@petugasCari')->name('petugas.cari');
@@ -60,9 +65,13 @@ Route::middleware(['adminLogin', 'XSS'])->group(function () {
 	Route::post('/admin/pengguna/tambah', 'masyarakatController@penggunaTambah')->name('pengguna.tambah');
 
 	Route::get('/admin/pengaduan', 'pengaduanAdminController@pengaduanIndex');
+	Route::get('/admin/pengaduan/filter', 'pengaduanAdminController@pengaduanFilterIndex')->name('pengaduan.filter');
 	Route::get('/admin/pengaduan/cari/', 'pengaduanAdminController@pengaduanCari')->name('pengaduan.cari');
 	Route::get('/admin/pengaduan/hapus/{id}', 'pengaduanAdminController@pengaduanHapus');
 	Route::get('/admin/pengaduan/ajax/{id}', 'pengaduanAdminController@pengaduanAjax');
 	Route::post('/admin/pengaduan/konfirmasi', 'pengaduanAdminController@pengaduanKonfirmasi')->name('pengaduan.konfirmasi');
 	Route::post('/admin/pengaduan/selesai', 'pengaduanAdminController@pengaduanSelesai')->name('pengaduan.selesai');
+
+	Route::get('/admin/laporan', 'laporanController@laporanIndex');
+	Route::get('/admin/laporan/export/', 'laporanController@laporanExport');
 });

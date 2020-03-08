@@ -48,7 +48,7 @@
 <!-- End Notifikasi -->
 
 <div class="container mt-4">
-	<div class="card">
+	<div class="card mb-5">
 	  <div class="card-header text-light" style="background-color: black;">
 	    Profile
 	  </div>
@@ -78,7 +78,7 @@
 			</div>
 			<label>Foto</label>	
 			<div class="card mb-3" style="width: 18rem;">
-			  <img src="{{ asset('storage/petugas/profile') }}/{{ $data->foto_petugas }}" class="card-img-top" alt="Preview" id="fotoprofile">
+			  <img src="{{ asset('storage/petugas/profile') }}/{{ $data->foto_petugas }}" class="card-img-top rounded" alt="Preview" id="fotoprofile">
 			</div>
 		  <button type="submit" class="btn btn-primary">Simpan Profile</button>
 		</form>
